@@ -8,9 +8,70 @@
 
 #import "BNRLogger.h"
 
+@interface BNRLogger ()
 
+-(void)zoneChanged: (NSNotification *)notification;
+
+@end
 
 @implementation BNRLogger
+
+// instance merthods
+- (void)zoneChanged:(NSNotification *)notification
+{
+    NSLog(@"the system time zone has changed");
+}
+
+// protocol methods:
+
+// called every time data arrive
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    
+    // log how many byte were recived
+    NSLog(@"recived %lu bytes", [data length]);
+    
+    // create a mutable data if it doesn't already exist
+    if (!_incomingData) {
+        _incomingData = [[NSMutableData alloc] init];
+    }
+    
+    // append the data to the data object
+    [_incomingData appendData:data];
+    
+}
+
+// called when the last chounk of data has processed
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+{
+   
+    // log that all data were recived
+    NSLog(@"got it all");
+    
+    // put it all into a string
+    NSString *string = [[NSString alloc] initWithData:_incomingData encoding:NSUTF8StringEncoding];
+    
+    // empty the mutableData object after we have all the data in the string
+    _incomingData = nil;
+    
+    // log how many characters the string has
+    NSLog(@"string has %lu characters", [string length]);
+    
+    // see the entire fetched file, comment next line because it might be a long line
+//    NSLog(@"the whole string is: %@", string);
+    
+}
+
+// called if the fetch failed
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    
+    // log the error message
+    NSLog(@"connection failed %@", [error localizedDescription]);
+    
+    // empty the mutableData object after the failure in connection
+    
+}
 
 // create a string for the lastTime string to be log
 - (NSString *)lastTimeString

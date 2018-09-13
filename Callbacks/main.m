@@ -12,15 +12,32 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
+        /////////////////////////////////////////////////////////////////////////
+        // TARGET-ACTION callback
+        
         // create a loggor
         BNRLogger *logger = [[BNRLogger alloc] init];
         
         // create a timer and call " " on it so that it update every 2 seconds
-        __unused NSTimer *timer = [NSTimer
-                          scheduledTimerWithTimeInterval:2.0
-                          target:logger
-                          selector:@selector(updateLastTime:)
-                          userInfo:nil repeats:YES];
+        // commented so we can check the next example
+//        __unused NSTimer *timer = [NSTimer
+//                          scheduledTimerWithTimeInterval:2.0
+//                          target:logger
+//                          selector:@selector(updateLastTime:)
+//                          userInfo:nil repeats:YES];
+        
+        //////////////////////////////////////////////////////////
+        // HELPER OBJECTB callback + notification
+        
+        [[NSNotificationCenter defaultCenter]addObserver:logger selector:@selector(zoneChange:) name:NSSystemTimeZoneDidChangeNotification object:nil];
+        
+        // create a url
+        NSURL *url = [NSURL URLWithString:@"http://www.gutenberg.org/cache/epub/205/pg205.txt"];
+        
+        // // create a request
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        
+        __unused NSURLConnection *fetchConn = [[NSURLConnection alloc] initWithRequest:request delegate:logger startImmediately:YES];
         
         
         // run until an event happen

@@ -11,6 +11,12 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface BNRLogger : NSObject
+    <NSURLConnectionDelegate, NSURLConnectionDataDelegate>
+
+// instance methods
+{
+    NSMutableData *_incomingData;
+}
 
 // properties
 @property (nonatomic) NSDate *lastTime;
