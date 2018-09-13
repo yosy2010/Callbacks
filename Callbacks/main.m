@@ -29,7 +29,7 @@ int main(int argc, const char * argv[]) {
         //////////////////////////////////////////////////////////
         // HELPER OBJECTB callback + notification
         
-        [[NSNotificationCenter defaultCenter]addObserver:logger selector:@selector(zoneChange:) name:NSSystemTimeZoneDidChangeNotification object:nil];
+        [[NSNotificationCenter defaultCenter]addObserver:logger selector:@selector(zoneChanged:) name:NSSystemTimeZoneDidChangeNotification object:nil];
         
         // create a url
         NSURL *url = [NSURL URLWithString:@"http://www.gutenberg.org/cache/epub/205/pg205.txt"];
