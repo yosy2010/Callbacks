@@ -29,7 +29,16 @@ int main(int argc, const char * argv[]) {
         //////////////////////////////////////////////////////////
         // HELPER OBJECTB callback + notification
         
-        [[NSNotificationCenter defaultCenter]addObserver:logger selector:@selector(zoneChanged:) name:NSSystemTimeZoneDidChangeNotification object:nil];
+//        - (void)zoneChanged:(NSNotification *)notification
+//        {
+//            NSLog(@"the system time zone has changed");
+//        }
+        
+//        [[NSNotificationCenter defaultCenter]addObserver:logger selector:@selector(zoneChanged:) name:NSSystemTimeZoneDidChangeNotification object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserverForName:NSSystemTimeZoneDidChangeNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            NSLog(@"the system time zone has changed");
+        }];
         
         // create a url
         NSURL *url = [NSURL URLWithString:@"http://www.gutenberg.org/cache/epub/205/pg205.txt"];
